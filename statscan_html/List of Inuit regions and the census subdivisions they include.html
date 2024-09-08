@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<!-- saved from url=(0107)https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/ipp-ppa/about-apropos/tab-inuit-inuite.cfm?LANG=E -->
+<html class="js backgroundsize borderimage csstransitions fontface svg details progressbar meter mathml cors largeview wb-enable" lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<!-- Web Experience Toolkit (WET) / Boîte à outils de l'expérience Web (BOEW)
+     wet-boew.github.io/wet-boew/License-en.html / wet-boew.github.io/wet-boew/Licence-fr.html -->
+
+<title>List of Inuit regions and the census subdivisions they include</title>
+<meta name="description" content="List of Inuit regions and the census subdivisions they include">
+<meta name="keywords" content="none">
+<meta name="dcterms.creator" content="Government of Canada, Statistics Canada">
+<meta name="dcterms.title" content="List of Inuit regions and the census subdivisions they include">
+<meta name="dcterms.issued" title="W3CDTF" content="2023-06-21">
+<meta name="dcterms.modified" title="W3CDTF" content="2023-06-21">
+<meta name="dcterms.subject" title="gcstc" content="none">
+<meta name="dcterms.language" title="ISO639-2/T" content="eng">
+<meta property="dcterms:service" content="StatCan"> 
+<meta property="dcterms:accessRights" content="2">
+
+<link rel="apple-touch-icon" sizes="57x57 72x72 114x114 144x144 150x150" class="wb-favicon" href="https://www12.statcan.gc.ca/wet-boew4b/assets/favicon-mobile.png"><link href="https://www12.statcan.gc.ca/wet-boew4b/assets/favicon.ico" rel="icon" type="image/x-icon" class="wb-init wb-favicon-inited">
+<link rel="stylesheet" href="./List of Inuit regions and the census subdivisions they include_files/wet-boew.min.css">
+<script src="./List of Inuit regions and the census subdivisions they include_files/en.min.js.download"></script><script src="./List of Inuit regions and the census subdivisions they include_files/jquery.min.js.download"></script>
+
+<link rel="stylesheet" href="./List of Inuit regions and the census subdivisions they include_files/theme.min.css">
+<link rel="stylesheet" href="./List of Inuit regions and the census subdivisions they include_files/statcan.css">
+<link rel="stylesheet" href="./List of Inuit regions and the census subdivisions they include_files/Overlay.css"> 
+
+<noscript><link rel="stylesheet" href="/wet-boew4b/css/noscript.min.css" /></noscript>
+<!-- Adobe Analytics v5 production version --><script src="./List of Inuit regions and the census subdivisions they include_files/launch-6df9e9b447f9.min.js.download"></script><script src="./List of Inuit regions and the census subdivisions they include_files/AppMeasurement.min.js.download" async=""></script><script src="./List of Inuit regions and the census subdivisions they include_files/AppMeasurement_Module_ActivityMap.min.js.download" async=""></script><script>_satellite["_runScript1"](function(event, target, Promise) {
+/*
+* Find most common Personal Identifiable Information (PII) in a string and return either the cleaned string either true/false
+* @param {string} str
+* @param {boolean} toClean
+* @return {string | true | false}
+* @example
+* findPotentialPII( "email:test@test.com, phone:123 123 1234", true )
+* returns "email:, phone:",
+* findPotentialPII( "email:test@test.com, phone:123 123 1234", false )
+* returns true
+*/
+findPotentialPII = function( str, toClean, bMarker ) {
+
+	if ( typeof str  !== "string" ) {
+		return false;
+	}
+	var regEx = [
+			[ /\d(?:[\s\-\\.\\/]?\d){8,}(?!\d)/ig, "[REDACTED/CAVIARDÉ]" ], //9digits or more pattern
+			[ /\b[A-Za-z]{2}[\s\\.-]*?\d{6}\b/ig, "[REDACTED/CAVIARDÉ]" ], //canadian nr passport pattern
+			[ /\b(?:[a-zA-Z0-9_\-\\.]+)(?:@|%40)(?:[a-zA-Z0-9_\-\\.]+)\.(?:[a-zA-Z]{2,5})\b/ig, "[REDACTED/CAVIARDÉ]" ], //email pattern
+			[ /\b[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d\b/ig, "[REDACTED/CAVIARDÉ]" ], //postal code pattern
+			[ /\b(?:(username|user)[:=][a-zA-Z0-9_\-\\.]+)\b/ig, "[REDACTED/CAVIARDÉ]" ],
+			[ /\b(?:(password|pass)[:=][^\s#&]+)\b/ig, "[REDACTED/CAVIARDÉ]" ],
+            [ /\b(?:case[\s-]?number[\s\-\\.]?(?:\d{5,10}))|(?:numéro[\s-]?de[\s-]?cas[\s\-\\.]?(?:\d{5,10}))/ig, "[REDACTED/CAVIARDÉ]" ]
+		],
+		isFound = false;
+
+	for ( var arr in regEx ) {
+		if ( str.match( regEx[ arr ][ 0 ] ) ) {
+			isFound = true;
+			if ( toClean ) {
+				str = str.replaceAll( regEx[ arr ] [ 0 ], ( bMarker === true ? regEx[ arr ][ 1 ] : "" ) );
+			}
+		}
+	}
+
+	return toClean && isFound ? str : isFound;
+};
+
+// scrub only email/user/pass 
+// slash repaced with hyphen due to folder count in url
+urlPotentialPII = function( str, toClean, bMarker ) {
+
+	if ( typeof str  !== "string" ) {
+		return false;
+	}
+	var regEx = [
+			[ /\b(?:[a-zA-Z0-9_\-\\.]+)(?:@|%40)(?:[a-zA-Z0-9_\-\\.]+)\.(?:[a-zA-Z]{2,5})\b/ig, "[REDACTED-CAVIARDÉ]" ], //email pattern
+           	[ /\b(?:(username|user)[:=][a-zA-Z0-9_\-\\.]+)\b/ig, "[REDACTED-CAVIARDÉ]" ],
+			[ /\b(?:(password|pass)[:=][^\s#&]+)\b/ig, "[REDACTED-CAVIARDÉ]" ]
+		],
+		isFound = false;
+
+	for ( var arr in regEx ) {
+		if ( str.match( regEx[ arr ][ 0 ] ) ) {
+			isFound = true;
+			if ( toClean ) {
+				str = str.replaceAll( regEx[ arr ] [ 0 ], ( bMarker === true ? regEx[ arr ][ 1 ] : "" ) );
+			}
+		}
+	}
+
+	return toClean && isFound ? str : isFound;
+};
+});</script><script>
+/*jshint maxerr: 100000, laxcomma: true */
+// whitelist/blacklist 
+/*
+ * Domain Whitelist and domain specific settings
+*/
+
+//make sure to update thisDomain with nulls!!!
+_satellite.gcCustom = {
+    domain_blacklist: ['/analytique-analytics/',
+            'checkingvisa.com',
+            '/naics/2017/v3/',
+  			'/gol-ged/awsc/amss/browser/check',
+  			'/gol-ged/awsc/amss/enrol/loginCheck',
+  			'/gol-ged/awsc/amss/enrol/logincheck',
+  			'beta.buyandsell.gc.ca/standing-offers-and-supply-arrangements-application/my-workspace/user-management/',
+  			'beta.achatsetventes.gc.ca/application-d-offres-a-commandes-et-d-arrangements-en-matiere-d-approvisionnement/mon-espace-travail/gestion-des-utilisateurs/',
+  			'gol-ecas-dev.ca.gc.ca/ecas/viewcasehistory.do',
+  			'services3.cic.gc.ca/ecas/viewcasehistory.do',
+  			'buyandsell.gc.ca/standing-offers-and-supply-arrangements-application/my-workspace/user-management/',
+  			'achatsetventes.gc.ca/application-d-offres-a-commandes-et-d-arrangements-en-matiere-d-approvisionnement/mon-espace-travail/gestion-des-utilisateurs/',
+            'en/reservation/cancel-annuler/confirmation',
+            'www.statcan.gc.ca/en/mystatcan/',
+            'www.statcan.gc.ca/eng/mystatcan/',
+            'www.statcan.gc.ca/fr/monstatcan/',
+            'www.statcan.gc.ca/fra/monstatcan/',
+            'www.statcan.gc.ca/en/user/',
+            'www.statcan.gc.ca/eng/user/',
+            'www.statcan.gc.ca/fr/user/',
+            'www.statcan.gc.ca/fra/user/',
+            'www.statcan.gc.ca/rdc-cdr'       
+            
+    ],
+    protocol_blacklist: ['javascript:', 'mailto:', 'tel:', 'blob:', 'data:'],
+
+    /*Follow this syntax for adding items to the whitelist
+    Double check and confirm you are adding to the STAGE or LIVE whitelist
+    Double check spelling and syntax for errors
+    */
+    thisDomain: { AppName: null, LoginStatus: null },
+    domain_whitelist: {
+        stage: {
+          //'...' : {AppName : null, LoginStatus : null}
+          //--- all items MUST inlcude a comma in order to append the next line item, except the last item does not require a comma
+            'www.canada.ca': { AppName: 'canada', LoginStatus: '2' },
+            'canada-aem-s3-stage.adobecqms.net': { AppName: 'canada', LoginStatus: '2' }, // testing
+            'agriculture.canada.ca': { AppName: null, LoginStatus: null }, // testing
+          //Department
+            '...': { AppName: null, LoginStatus: null },
+          //Testing
+            'esdc.prv': { AppName: null, LoginStatus: null },
+             'travel.gc.ca': { AppName: null, LoginStatus: null },
+             'agriculture.canada.ca': { AppName: null, LoginStatus: null },
+          //Social Security Tribunal of Canada
+            'sst-stage.stage.atssc-scdata.gc.ca': { AppName: null, LoginStatus: null }, 
+            'www.sst-tss.gc.ca': { AppName: null, LoginStatus: null }, 
+          //Statistics Canada
+            'www.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'wwwqa.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'www150.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'stc-ndm-qa-pc2.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'www12.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'www120.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'www144.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'transport-dev.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'www65.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'www66.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'information-energie.canada.ca': { AppName: null, LoginStatus: null },
+            'energy-information.canada.ca': { AppName: null, LoginStatus: null },
+            'census.gc.ca': { AppName: null, LoginStatus: null },
+            'recensement.gc.ca': { AppName: null, LoginStatus: null },
+            'www23.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'www35.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'geosuite.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'geoprod.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'stc-ndm-new-qa-pc2.statcan.gc.ca': { AppName: null, LoginStatus: null },
+            'www97.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'www160.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'www.test.cloud.statcan.ca': {AppName : null, LoginStatus : null},
+            'test.cloud.statcan.ca': {AppName : null, LoginStatus : null},
+            'www159-dev.stc.ca': {AppName : null, LoginStatus : null},
+            'cancer-dev.stc.ca': { AppName: null, LoginStatus: null },
+          // Employment and Social Development Canada
+            'test.cms-sgc.esdc-edsc.canada.ca': { AppName: null, LoginStatus: null },
+            'cms-sgc.esdc-edsc.canada.ca': { AppName: null, LoginStatus: null },
+            'test.iservice.esdc-edsc.canada.ca': { AppName: null, LoginStatus: null },
+            's2dev-esdc.wpaz.dev': { AppName: null, LoginStatus: null },
+            'eservice-uat.powerappsportals.com': { AppName: null, LoginStatus: null },
+            'iservice.prv': { AppName: null, LoginStatus: null },
+            'www.iservice.prv': { AppName: null, LoginStatus: null },
+            'www.uat12-ssl.services.gc.qat': { AppName: null, LoginStatus: null },
+            'uat12-ssl.services.gc.qat': { AppName: null, LoginStatus: null },
+            'int16-ssl.services.gc.qat': { AppName: null, LoginStatus: null },
+            'www.int16-ssl.services.gc.qat': { AppName: null, LoginStatus: null },
+          // Superintendent of Financial Institutions Canada (Office of the)
+            'www.uatintranet.osfi-bsif.gc.ca': { AppName: null, LoginStatus: null },
+            'uatintranet.osfi-bsif.gc.ca': { AppName: null, LoginStatus: null },
+          // Public Service Commission
+            'devwww5.psc-cfp.gc.ca': { AppName: null, LoginStatus: null },
+
+          
+        },
+        live: {
+        //'...' : {AppName : null, LoginStatus : null}
+            //Department
+            '...': {AppName : null, LoginStatus : null},
+            //Social Security Tribunal of Canada
+            'www.sst-tss.gc.ca': {AppName : null, LoginStatus : null},
+           //StatCan
+             //'www97.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'www144.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'www159.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'www160.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'cancer-data.canada.ca': {AppName : null, LoginStatus : null},
+            'donnees-cancer.canada.ca': {AppName : null, LoginStatus : null},
+            'www.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'www150.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'www12.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'www65.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'www66.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'www.information-energie.canada.ca': {AppName : null, LoginStatus : null},
+            'information-energie.canada.ca': {AppName : null, LoginStatus : null},
+            'www.energy-information.canada.ca': {AppName : null, LoginStatus : null},
+            'energy-information.canada.ca': {AppName : null, LoginStatus : null},
+            'www.census.gc.ca': {AppName : null, LoginStatus : null},
+            'census.gc.ca': {AppName : null, LoginStatus : null},
+            'www.recensement.gc.ca': {AppName : null, LoginStatus : null},
+            'recensement.gc.ca': {AppName : null, LoginStatus : null},
+            'www23.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'www.geosuite.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'geosuite.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'www.geoprod.statcan.gc.ca': {AppName : null, LoginStatus : null},
+            'geoprod.statcan.gc.ca': {AppName : null, LoginStatus : null},
+           //Employment and Social Development Canada
+            'www.esdc.gc.ca': {AppName : null, LoginStatus : null},
+            'esdc.gc.ca': {AppName : null, LoginStatus : null},
+            'www.esdc.prv': {AppName : null, LoginStatus : null},
+            'esdc.prv': {AppName : null, LoginStatus : null},
+            'www.iservice.prv': {AppName : null, LoginStatus : null},
+            'iservice.prv': {AppName : null, LoginStatus : null},
+            'www.edsc.prv': {AppName : null, LoginStatus : null},
+            'edsc.prv': {AppName : null, LoginStatus : null},
+            'www.eservices.canada.ca': {AppName : null, LoginStatus : null},
+            'eservices.canada.ca': {AppName : null, LoginStatus : null},
+            'www.red-seal.ca': {AppName : null, LoginStatus : null},
+            'red-seal.ca': {AppName : null, LoginStatus : null},
+            'www.sceau-rouge.ca': {AppName : null, LoginStatus : null},
+            'sceau-rouge.ca': {AppName : null, LoginStatus : null},
+            'www.ellischart.ca': {AppName : null, LoginStatus : null},
+            'ellischart.ca': {AppName : null, LoginStatus : null},
+            'www.tableauellis.ca': {AppName : null, LoginStatus : null},
+            'tableauellis.ca': {AppName : null, LoginStatus : null},
+            'www.srv138.services.gc.ca': {AppName : null, LoginStatus : null},
+            'srv138.services.gc.ca': {AppName : null, LoginStatus : null},
+            'benefitsfinder.services.gc.ca': {AppName : null, LoginStatus : null},
+            'www.benefitsfinder.services.gc.ca': {AppName : null, LoginStatus : null},
+          //Public Service Commission
+            'www5.psc-cfp.gc.ca': {AppName : null, LoginStatus : null},
+          //Office of the Superintendent of Financial Institutions
+            'www.intranet.osfi-bsif.gc.ca': {AppName : null, LoginStatus : null},
+            'intranet.osfi-bsif.gc.ca': {AppName : null, LoginStatus : null},
+          
+          
+
+
+        },
+  },
+ internal_filters : [
+ //this is used for outbound link tracking
+    //CANADA.CA (AEM)	
+		'iv.apps.canada.ca' // Booking Tool Prod
+		,'v.apps.canada.ca' // Booking Tool Prod
+		,'gcbooking.adobecqms.net' //Booking Tool
+        ,'agriculture.canada.ca'
+		,'localhost'
+		,'universallabs.org' 
+		,'dev1.canada.ca'
+		,'dev3.canada.ca'
+		,'www1.canada.ca' 
+		,'canada.ca' 
+		,'www.canada.ca' 
+		,'staging65s3.canada.ca' // AEM 6.5
+		,'canada-aem-s3-stage.adobecqms.net' // AEM 6.5
+		,'staging-recherche.gc.ca' // Search
+		,'recherche.gc.ca' 
+		,'recherche-search.gc.ca' 
+		,'search.gc.ca' 
+		,'search-recherche.gc.ca'
+		,'www.recherche.gc.ca' 
+		,'www.recherche-search.gc.ca' 
+		,'www.search.gc.ca' 
+		,'www.search-recherche.gc.ca' 
+		,'canada-service-corps.canada.ca' // PM Service Corps
+		,'service-jeunesse.canada.ca' 
+	// Library and Archives
+		,'bac-lac.gc.ca'
+		,'lac-bac.gc.ca'
+		,'www.bac-lac.gc.ca'
+		,'www.lac-bac.gc.ca'
+		,'canadiana-qa.dev.bac-lac.gc.ca'
+		,'central.bac-lac.gc.ca'
+		,'central-d.dev.bac-lac.gc.ca'
+		,'webdev-srv.dev.bac-lac.gc.ca'
+		,'webqa-srv01.qa.bac-lac.gc.ca'
+		,'ucc-qa'
+		,'v41extweb01-d.services.bac-lac.gc.ca'
+		,'canadiana.bac-lac.gc.ca'
+		,'www.canadiana.bac-lac.gc.ca' 
+		,'cipbookentry.bac-lac.gc.ca' 
+		,'cipbookentry-qa.dev.bac-lac.gc.ca'
+		,'www.cipbookentry.bac-lac.gc.ca' 
+		,'co-lab.bac-lac.gc.ca' 
+		,'www.co-lab.bac-lac.gc.ca' 
+		,'sigles-symbols-qa.bac-lac.gc.ca'
+		,'sigles-symbols.bac-lac.gc.ca' 
+		,'www.sigles-symbols.bac-lac.gc.ca' 
+		,'event-qa'
+		,'event.bac-lac.gc.ca' 
+		,'www.event.bac-lac.gc.ca' 
+		,'nouvelle-france.org' 
+		,'www.collectionscanada.gc.ca'
+		,'cipbookentry-d.dev.bac-lac.gc.ca'
+		,'v41extcapps01-d.dev.bac-lac.gc.ca'
+		,'tdg-grt-d.dev.bac-lac.gc.ca'
+		,'event-d.dev.bac-lac.gc.ca'
+		,'canadiana-d.dev.bac-lac.gc.ca'
+		,'sigles-symbols-d.bac-lac.gc.ca'
+		,'dev-www.bac-lac.gc.ca'
+		,'financement-funding.bac-lac.gc.ca'
+		,'tdg-grt.bac-lac.gc.ca'
+		,'event.bac-lac.gc.ca'
+		,'sigles-symbols.bac-lac.gc.ca'
+		,'webdev-srv.dev.bac-lac.gc.ca'	
+	    ,'webqa-srv01.qa.bac-lac.gc.ca'
+        ,'data2.collectionscanada.gc.ca' //testing
+	// Impact Assessment Agency of Canada
+		,'acee.gc.ca' // Old domain (CEAA)	
+		,'acee-ceaa.gc.ca' 
+		,'www.acee.gc.ca' 
+		,'www.acee-ceaa.gc.ca' 
+		,'ceaa.dev.ec.gc.ca' 
+		,'ceaa.gc.ca' 
+		,'ceaa-acee.gc.ca' 
+		,'www.ceaa.gc.ca' 
+		,'www.ceaa-acee.gc.ca' 
+		,'ceaa.qa.ncr.ec.gc.ca'
+		,'www.iaac-acei.gc.ca' // New domain (IAAC)
+		,'iaac-acei.gc.ca'
+		,'www.acei-iaac.gc.ca'
+		,'acei-iaac.gc.ca'
+		,'www.iaac.gc.ca'
+		,'iaac.gc.ca'
+		,'www.acei.gc.ca'
+		,'acei.gc.ca'
+		,'www.iaac-aeic.gc.ca'
+		,'iaac-aeic.gc.ca'
+		,'www.aeic-iaac.gc.ca'
+		,'aeic-iaac.gc.ca'
+		,'www.aeic.gc.ca'
+		,'aeic.gc.ca'
+		,'elearning.iaac-aeic.gc.ca'
+		,'apprentissage-en-ligne.aeic-iaac.gc.ca'
+    // Agriculture and Agri-Food Canada
+		,'www.agr.gc.ca' 
+		,'agr.gc.ca' 
+		,'www-dev.agr.gc.ca' 
+		,'intranet.agr.gc.ca'
+		,'www-tst.agr.gc.ca'
+		,'canadabrandgocaccess.agr.gc.ca'
+		,'canadabrandgocaccess.agr.gc.ca'	
+		,'www.canadabrand.agr.gc.ca'	
+		,'canadabrand.agr.gc.ca'	
+		,'brandcanada.agr.gc.ca'	
+		,'www.brandcanada.agr.gc.ca'	
+		,'marquecanadabrand.agr.gc.ca'	
+		,'www.marquecanadabrand.agr.gc.ca'
+    // Treasury Board Secretariat	
+		,'atip-aiprp.tbs-sct.gc.ca' 
+		,'uat.atip-aiprp.tbs-sct.gc.ca' 
+		,'pre-prod.atip-aiprp.tbs-sct.gc.ca' 
+		,'authoring.publiservice.tbs-sct.gc.ca' 
+		,'authoring.www.tbs-sct.gc.ca'
+		,'staging.open.canada.ca'
+		,'search-staging.open.canada.ca'
+		,'open.canada.ca'
+		,'search.open.canada.ca'
+        ,'ouvert.canada.ca'
+        ,'rechercher.ouvert.canada.ca'
+		,'staging.atip-aiprp.tbs-sct.gc.ca'
+		,'uat1.atip-aiprp.tbs-sct.gc.ca'
+		,'uat.tbs-sct.gc.ca'
+		,'www.tbs-sct.gc.ca'
+        ,'dev.tbs-sct.gc.ca'
+        ,'www.tbs-sct.gc.ca'
+    // Statistics Canada
+		,'www.statcan.gc.ca'
+		,'www5.statcan.gc.ca'
+		,'www12.statcan.gc.ca'
+		,'www23.statcan.gc.ca'
+		,'www35.statcan.gc.ca'
+		,'www65.statcan.gc.ca'
+		,'www66.statcan.gc.ca'
+		,'www76.statcan.gc.ca'
+		,'www120.statcan.gc.ca'
+		,'www144.statcan.gc.ca'
+		,'www150.statcan.gc.ca'
+        ,'www160.statcan.gc.ca'
+		,'information-energie.canada.ca'
+		,'information-energie.statcan.gc.ca'
+		,'energy-information.canada.ca'
+		,'census.gc.ca'
+		,'recensement.gc.ca'
+		,'geosuite.statcan.gc.ca'
+		,'geoprod.statcan.gc.ca'
+		,'wpaz-ofm12c-ssl-i.services.gc.qat'
+		,'www5testb.statcan.gc.ca'
+		,'srv113-i.lab.hrdc-drhc.gc.ca'
+		,'src-dev13.wcms.statcan.ca'
+		,'codweb1.stcpaz.statcan.gc.ca'
+		,'codweb2.stcpaz.statcan.gc.ca'
+		,'stc-ndm-qa-pc2.statcan.gc.ca'
+		,'stc-ndm-qa-pc2.statcan.gc.ca'
+		,'prod-p-es-fusion01.stcpaz.statcan.gc.ca'
+		,'census-qa.statcan.gc.ca'
+		,'recensement-qa.statcan.gc.ca'
+		,'qa-p-es-ui01.stcpaz.statcan.gc.ca'
+		,'dv-vd-sprint1.test.cloud.statcan.ca'
+		,'www.dv-vd-sprint1.test.cloud.statcan.ca'
+		,'wwwqa.statcan.gc.ca'
+		,'www76qa.statcan.gc.ca'
+		,'geodepot.statcan.gc.ca'
+		,'geodepot.statcan.ca'
+		,'portal.covid.cloud.statcan.ca'          
+		,'analytics-platform.statcan.gc.ca'   
+		,'oc-dev.covid.cloud.statcan.ca'   
+		,'web2-test1.wcms.statcan.ca'
+ 		,'daaas-dev.covid.cloud.statcan.ca'
+		,'oc-dev.covid.cloud.statcan.ca'
+        ,'transport-dev.statcan.gc.ca'
+        ,'stc-ndm-new-qa-pc2.statcan.gc.ca'
+        ,'www.test.cloud.statcan.ca'
+        ,'test.cloud.statcan.ca'
+        ,'www159-dev.stc.ca'
+        ,'cancer-dev.stc.ca'
+        ,'cancer-data.canada.ca'
+        ,'donnees-cancer.canada.ca'
+        ,'www159.statcan.gc.ca'
+	// Employment Social Developmet Canada
+		,'disclosure.esdc.gc.ca' 
+		,'disclosure.servicecanada.gc.ca' 
+		,'www.canadabenefits.gc.ca' 
+		,'www.canadabenefits.gc.ca' 
+		,'wpaz-ofm12c-ssl-i.services.gc.qat' 
+		,'wpaz-ofm-i.sade-edap.prv' 
+		,'wpaz-ofm-i-e-esdc.services.gc.qat' 
+		,'prestationsducanada.gc.ca' 
+		,'www.prestationsducanada.gc.ca' 
+		,'negotech.labour.gc.ca'
+		,'negotheque.travail.gc.ca'
+		,'mlapesd3963v-s2tst-negotech.intra.dev'
+		,'cv19benefits-appservice-staging.azurewebsites.net'
+		,'cv19benefits-appservice-dev.azurewebsites.net'
+		,'covid-benefits.alpha.canada.ca'
+		,'covid-prestations.alpha.canada.ca'
+		,'woodpecker.eastus.cloudapp.azure.com'
+		,'multi-benefits.servicecanada.gc.ca' //CERB DFO
+		,'multi-benefices.servicecanada.gc.ca' //CERB DFO
+		,'pesdc.prv'
+		,'esin-sandbox.powerappsportals.com'	
+		,'srv2140-i2.services.gc.qat'	
+		,'srv2140-s.services.gc.qat'
+		,'sin-nas.canada.ca'
+        ,'alphasite.dts-stn.com'
+        ,'vc-frontend-static-juane.netlify.app'
+        ,'test.cms-sgc.esdc-edsc.canada.ca'
+        ,'test.iservice.esdc-edsc.canada.ca'
+        ,'s2dev-esdc.wpaz.dev'
+        ,'cms-sgc.esdc-edsc.canada.ca'
+        ,'eservice-uat.powerappsportals.com'
+        ,'iservice.prv'
+        ,'www.iservice.prv'
+        ,'www.esdc.gc.ca'
+        ,'esdc.gc.ca'
+        ,'www.uat12-ssl.services.gc.qat'
+        ,'uat12-ssl.services.gc.qat'
+        ,'www.esdc.prv'
+        ,'esdc.prv'
+        ,'www.edsc.prv'
+        ,'edsc.prv'
+        ,'int16-ssl.services.gc.qat'
+        ,'www.int16-ssl.services.gc.qat'
+        ,'www.eservices.canada.ca'
+        ,'eservices.canada.ca'
+        ,'www.red-seal.ca'
+        ,'red-seal.ca'
+        ,'www.sceau-rouge.ca'
+        ,'sceau-rouge.ca'
+        ,'www.ellischart.ca'
+        ,'ellischart.ca'
+        ,'www.tableauellis.ca'
+        ,'tableauellis.ca'
+        ,'www.srv138.services.gc.ca'
+        ,'srv138.services.gc.ca'
+        ,'www.benefitsfinder.services.gc.ca'
+        ,'benefitsfinder.services.gc.ca'
+	// Elections
+		,'ec9wbstepfpkedu' 
+		,'elections.ca' 
+		,'www.elections.ca' 
+		,'enr.elections.ca' 
+		,'www.test.elections.ca' 
+		,'enr.test.elections.ca'
+		,'ereg.elections.ca' 
+		,'www.ereg.elections.ca' 
+		,'ispdevwww.elections.ca' 
+		,'secure.elections.ca' 
+		,'secure.test.elections.ca' 
+		,'rspispweb01-ste-demo1.elections.ca'
+		,'ereg.test.elections.ca'
+		,'ereg.elections.ca'
+		,'www.ereg.elections.ca'
+		,'ecdev_maint-pesc.ecade.elections.ca'
+		,'www.ecdev_maint-pesc.ecade.elections.ca'
+		,'cef-cce.ca'
+		,'www.cef-cce.ca'
+		,'ispdevwww.elections.ca'
+		,'ec9wbedtpfpked'
+	// Natural Resources Canada
+		,'equalby30.org' 
+		,'www.equalby30.org' 
+		,'nrcan.gc.ca' 
+		,'www.nrcan.gc.ca' 
+		,'rncan.gc.ca' 
+		,'www.rncan.gc.ca' 
+		,'rncanengagenrcan.ca' 
+		,'www.rncanengagenrcan.ca' 
+		,'test.nrcan.gc.ca' 
+		,'test.rncan.gc.ca' 
+		,'www.test.nrcan.gc.ca' 
+		,'www.test.rncan.gc.ca' 
+		,'minescanada.ca'
+		,'www.minescanada.ca'
+		,'globe-cem-mi.yourballistic.com'
+		,'esrfunds.org'
+		,'www.esrfunds.org'
+		,'www.fondsee.org'
+		,'fondsee.org'	
+		,'www.npa.gc.ca'	
+		,'npa.gc.ca'	
+		,'www.apn.gc.ca'	
+		,'www.mpmo.gc.ca'	
+		,'www.bggp.gc.ca'	
+		,'www.apap.gc.ca'	
+		,'www.paap.gc.ca'
+		,'cem-mi-vancouver2019.ca'
+		,'www.cem-mi-vancouver2019.ca'
+		,'cmep-mi-vancouver2019.ca'
+		,'apap.gc.ca'
+		,'paap.gc.ca'
+		,'www.esrfunds.org'
+		,'www.fondsee.org'
+		,'mpmo.gc.ca'
+		,'bggp.gc.ca'
+		,'npa.gc.ca'
+		,'apn.gc.ca'
+		,'natural-resources.canada.ca' //new canada.ca subdomainsdomain
+		,'ressources-naturelles.canada.ca' //new canada.ca subdomain
+		,'nrcan.canada.ca' //new canada.ca subdomain
+		,'rncan.canada.ca' //new canada.ca subdomain
+		,'nrcan-rncan.canada.ca' //new canada.ca subdomain
+		,'rncan-nrcan.canada.ca' //new canada.ca subdomain
+		,'osdp-cumulative-effects-stage.canada.ca'
+		,'psdo-effets-cumulatifs-stage.canada.ca'
+		,'qa.dev.osdp.aws.nrcan-rncan.cloud'
+		,'osdp-cumulative-effects.canada.ca'
+		,'psdo-effets-cumulatifs.canada.ca'
+		,'www.dev.nrcan.gc.ca'
+		,'dev.nrcan.gc.ca'
+		,'www.dev.rncan.gc.ca'
+		,'dev.rncan.gc.ca' 
+		,'dev.npa.gc.ca'
+		,'dev.esrfunds.org'
+		,'dev.mpmo.gc.ca'
+		,'dev.apn.gc.ca'
+		,'dev.fondsee.org'
+		,'dev.bggp.gc.ca'
+		,'osdp-psdo.canada.ca'
+		,'stg-osdp-psdo.canada.ca'
+		,'uat-osdp-psdo.canada.ca'
+	// Office of the procurement ombudsman
+		,'opo-boa.gc.ca' 
+		,'dev.boa-opo.gc.ca' 
+		,'xterra3w2k16.ncr.pwgsc.gc.ca'
+		,'secure.opo-boa.gc.ca'
+	// MSCA-MEIIO
+		,'srv113-i.lab.hrdc-drhc.gc.ca' 
+		,'srv113-u.lab.hrdc-drhc.gc.ca' 
+		,'srv136.services.gc.ca' 
+		,'srv2140-u.services.gc.qat' 
+		,'srv241-s2.lab.hrdc-drhc.gc.ca' 
+	// Transport Canada
+		,'transport-dev' 
+	// Health Canada
+		,'a8047055' 
+		,'cfgtest.canadacentral.cloudapp.azure.com' //food guide
+		,'vmportaltest.canadacentral.cloudapp.azure.com'
+		,'prcitestfr.canadacentral.cloudapp.azure.com'
+		,'food-guide.canada.ca'
+		,'www.food-guide.canada.ca'
+		,'www.guide-alimentaire.canada.ca'
+		,'guide-alimentaire.canada.ca'
+		,'clinical-information.canada.ca'
+		,'renseignements-cliniques.canada.ca'
+		,'cfg-qa.hres.ca'
+		,'cfg-stage.hres.ca'
+		,'food-guide-stage.hpfb-dgpsa.ca'
+	// Immigration Refugee Canada
+		,'www.cic.gc.ca'
+		,'cic.gc.ca'
+		,'eservices1.ci.gc.ca'
+		,'gol-ecas-dev.ci.gc.ca'
+		,'www-dev.ic.gc.ca'
+		,'eservices.cic.gc.ca'
+		,'services3.cic.gc.ca'
+		,'eservices5.ci.gc.ca'
+        ,'ircc.canada.ca'
+	// Canada Revenue Agency
+		,'cra-arc.gc.ca'
+		,'arc-cra.gc.ca'
+		,'cra.gc.ca'
+		,'arc.gc.ca'
+		,'www.cra-arc.gc.ca'
+		,'www.arc-cra.gc.ca'
+		,'www.cra.gc.ca'
+		,'www.arc.gc.ca'
+		,'apps.cra-arc.gc.ca'
+		//CRA UT
+		,'cp-ut.isvcs.net'
+		,'rp-ut.isvcs.net'
+		,'cp-ut2.isvcs.net'
+		,'rp-ut2.isvcs.net'
+		//CRA SI
+		,'ams-sga-si.cra-arc.gc.ca'
+		,'cms-sgj-si.cra-arc.gc.ca'
+		,'ams-sga-si2.cra-arc.gc.ca'
+		,'cms-sgj-si2.cra-arc.gc.ca'
+		//CRA UA
+		,'ams-sga-ua.cra-arc.gc.ca'
+		,'cms-sgj-ua.cra-arc.gc.ca'
+		,'ams-sga-ua2.cra-arc.gc.ca'
+		,'cms-sgj-ua2.cra-arc.gc.ca'
+		//CRA OT	
+		,'apps1.ams-sga-ot.cra-arc.gc.ca'
+		,'apps2.ams-sga-ot.cra-arc.gc.ca'
+		,'apps3.ams-sga-ot.cra-arc.gc.ca'
+		,'apps4.ams-sga-ot.cra-arc.gc.ca'
+		,'apps5.ams-sga-ot.cra-arc.gc.ca'
+		,'apps6.ams-sga-ot.cra-arc.gc.ca'
+		,'apps7.ams-sga-ot.cra-arc.gc.ca'
+		,'apps8.ams-sga-ot.cra-arc.gc.ca'
+		,'cms-sgj-ot.cra-arc.gc.ca'
+		,'apps1.ams-sga-ot2.cra-arc.gc.ca'
+		,'apps2.ams-sga-ot2.cra-arc.gc.ca'
+		,'apps3.ams-sga-ot2.cra-arc.gc.ca'
+		,'apps4.ams-sga-ot2.cra-arc.gc.ca'
+		,'apps5.ams-sga-ot2.cra-arc.gc.ca'
+		,'apps6.ams-sga-ot2.cra-arc.gc.ca'
+		,'apps7.ams-sga-ot2.cra-arc.gc.ca'
+		,'apps8.ams-sga-ot2.cra-arc.gc.ca'
+		,'cms-sgj-ot2.cra-arc.gc.ca'
+		,'ams-sga.cra-arc.gc.ca'
+		,'cms-sgj.cra-arc.gc.ca'
+		,'apps1.ams-sga.cra-arc.gc.ca'
+		,'apps2.ams-sga.cra-arc.gc.ca'
+		,'apps3.ams-sga.cra-arc.gc.ca'
+		,'apps4.ams-sga.cra-arc.gc.ca'
+		,'apps5.ams-sga.cra-arc.gc.ca'
+		,'apps6.ams-sga.cra-arc.gc.ca'
+		,'apps7.ams-sga.cra-arc.gc.ca'
+		,'apps8.ams-sga.cra-arc.gc.ca'
+		,'www.ams-sga.cra-arc.gc.ca'
+		,'www.cms-sgj.cra-arc.gc.ca'
+		,'www.apps1.ams-sga.cra-arc.gc.ca'
+		,'www.apps2.ams-sga.cra-arc.gc.ca'
+		,'www.apps3.ams-sga.cra-arc.gc.ca'
+		,'www.apps4.ams-sga.cra-arc.gc.ca'
+		,'www.apps5.ams-sga.cra-arc.gc.ca'
+		,'www.apps6.ams-sga.cra-arc.gc.ca'
+		,'www.apps7.ams-sga.cra-arc.gc.ca'
+		,'www.apps8.ams-sga.cra-arc.gc.ca'
+		,'apps-ut.cra-arc.gc.ca'
+		,'apps-ua.cra-arc.gc.ca' 
+		,'apps-ut.isvcs.net'
+		,'apps-ua.isvcs.net'
+		,'apps-ut2.cra-arc.gc.ca'
+		,'apps-ua2.cra-arc.gc.ca'
+		,'apps-ut2.isvcs.net'
+		,'apps-ua2.isvcs.net'
+		,'performance.alpha.canada.ca'
+	// Public Services procurement Canada
+		,'test.publications.gc.ca'
+		,'publications.gc.ca'
+		,'www.publications.gc.ca'
+		,'content.buyandsell.gc.ca'
+		,'beta.buyandsell.gc.ca'
+		,'beta.achatsetventes.gc.ca'
+		,'test.buyandsell.gc.ca'	
+		,'test.achatsetventes.gc.ca'
+		,'webdev02.tpsgc-pwgsc.gc.ca'
+		,'www.tpsgc-pwgsc.gc.ca'
+		,'buyandsell.gc.ca'
+		,'achatsetventes.gc.ca'
+		,'staging.achatscanadabuys.ca'
+		,'m8-test.achatscanadabuys.ca'
+		,'m8-test.achatscanadabuys.ca'
+		,'m8-dev-collab.achatscanadabuys.ca'
+		,'webdev01.tpsgc-pwgsc.gc.ca'
+		,'webdev02.tpsgc-pwgsc.gc.ca'
+		,'webdev08.tpsgc-pwgsc.gc.ca'
+        ,'m8-uat.achatscanadabuys.ca'
+	// Global Affiars Canada
+		,'www.international.gc.ca'
+		,'international.gc.ca'
+		,'www.tradecommissioner.gc.ca'
+		,'www.deleguescommerciaux.gc.ca'
+		,'travel-ace-m2'
+		,'voyage-ace-m2' 
+		,'travel.gc.ca'
+		,'voyage.gc.ca' 
+		,'core-ombuds.canada.ca'
+		,'deleguescommerciaux.gc.ca'
+		,'www.educanada.ca'
+    // Justice
+		,'www-uat.justice.gc.ca'
+		,'limsdev.justice.gc.ca'
+		,'dmteam-uat.justice.gc.ca'
+		,'equipesm-uat.justice.gc.ca'
+		,'www-uat.victimsfirst.gc.ca'
+		,'www-uat.victimesdabord.gc.ca'
+		,'jusnet-uat.justice.gc.ca'
+		,'www-uat.victimsweek.gc.ca'
+		,'www-uat.semainedesvictimes.gc.ca'
+		,'www.justice.gc.ca'
+		,'justice.gc.ca'
+		,'dmteam.justice.gc.ca'
+		,'equipesm.justice.gc.ca'
+		,'www.laws-lois.justice.gc.ca'
+		,'laws-lois.justice.gc.ca'
+		,'lois-laws.justice.gc.ca'
+		,'www.lois-laws.justice.gc.ca'
+		,'www.ppsc.gc.ca'
+		,'ppsc.gc.ca'
+		,'www.victimsweek.gc.ca'
+		,'www.semainedesvictimes.gc.ca'
+		,'victimsweek.gc.ca'
+		,'semainedesvictimes.gc.ca'
+		,'jusnet.justice.gc.ca'
+	// Canadian Food Inspection Agency
+		,'inspection.gc.ca'
+		,'www.inspection.gc.ca'
+		,'inspection.canada.ca'
+		,'www.inspection.canada.ca'
+		,'active.inspection.gc.ca'
+		,'www.active.inspection.gc.ca'
+		,'merlin.cfia-acia.inspection.gc.ca'
+		,'apps.merlin.cfia-acia.inspection.gc.ca'
+		,'www.apps.merlin.cfia-acia.inspection.gc.ca'
+		,'inspection.canada.ca'
+	// Public Safety Canada
+		,'infomediadev'
+		,'infomedia.gc.ca'
+		,'www.infomedia.gc.ca'
+		,'beta.infomedia.gc.ca'
+		,'api.infomedia.gc.ca'
+		,'icdev'
+		,'psdev'
+		,'gpdev'
+		,'psdev'
+		,'gpdev'
+		,'ecdev'
+		,'icdev'
+		,'publicsafety.gc.ca'
+		,'www.publicsafety.gc.ca'
+		,'securitepublique.gc.ca'
+		,'www.securitepublique.gc.ca'
+		,'getprepared.gc.ca'
+		,'www.getprepared.gc.ca'
+		,'preparez-vous.gc.ca'
+		,'www.preparez-vous.gc.ca'
+		,'erc-cee.gc.ca'
+		,'www.erc-cee.gc.ca'
+		,'infocentral'
+		,'infocentrale'
+		,'infocentral'
+	// RCMP External Review Committee
+		,'ercdev'
+	// Open Government
+		,'staging.open.canada.ca'
+		,'stadification.ouvert.canada.ca'
+		,'open.canada.ca'
+		,'ouvert.canada.ca'
+		,'search.open.canada.ca'
+		,'rechercher.ouvert.canada.ca'
+	// Correctional Investigator Canada
+		,'www.oci-bec.gc.ca'
+		,'oci-bec.gc.ca'
+	//Public Service Commission
+		,'intracom'
+		,'intradev'
+		,'intracom.psc-cfp.gc.ca'
+		,'extranet.psc-cfp.gc.ca'
+		,'devextranet.psc-cfp.gc.ca'
+		,'test-psjobs-emploisfp.psc-cfp.gc.ca'
+		,'emploisfp-psjobs.cfp-psc.gc.ca'
+        ,'devwww5.psc-cfp.gc.ca'
+        ,'www5.psc-cfp.gc.ca'
+	//Superintendent of Financial Institutions Canada (Office of the)
+		,'devirppub.devosfi.ca'
+		,'uatirppub.devosfi.ca'
+		,'uatirppub.osfi-bsif.gc.ca'	
+		,'uatirppub.devosfi.ca'
+        ,'www.uatintranet.osfi-bsif.gc.ca'
+        ,'uatintranet.osfi-bsif.gc.ca'
+        ,'www.intranet.osfi-bsif.gc.ca'
+        ,'intranet.osfi-bsif.gc.ca'
+	//Women and Gender Equality Canada	
+		,'canada/testing/page1-fr.html'	
+		,'canada/testing/page1-en.html'	
+		,'intranettest'	
+	//Canadian Space Agency
+		,'devcorpo'
+		,'asc-csa.gc.ca'
+		,'www.asc-csa.gc.ca'
+		,'csa-asc.gc.ca'
+		,'www.csa-asc.gc.ca'
+   //Social Security Tribunal of Canada
+ 		,'sst-stage.stage.atssc-scdata.gc.ca' 
+        ,'www.sst-tss.gc.ca'
+
+	
+
+ ]
+};
+
+
+
+
+/* ===== Set data elements that rely on whitelist ===== */
+
+/*jsAbort START*/
+var dirs;
+var list;
+var h = document.location.hostname.toLowerCase(); //host
+var j = document.location.pathname.toLowerCase(); //path
+
+if (_satellite.buildInfo.environment == "production") {
+    list = _satellite.gcCustom.domain_whitelist.live;
+}
+else {
+    list = _satellite.gcCustom.domain_whitelist.stage;
+    //list = _satellite.gcCustom.domain_whitelist.live; //FOR TESTING ON LIVE ONLY! REMOVE
+
+}
+
+//directories to exclude
+///Input list. Each item must be inputed with its own quotation marks and be separted using a comma
+/// excl list cannot be empty
+excl = _satellite.gcCustom.domain_blacklist
+
+var j = document.location.host + document.location.pathname.toLowerCase(); //path
+var toExcl = false; //set to false by default
+for (var i in excl) {
+    if (j.indexOf(excl[i]) > -1) {
+        toExcl = true;
+    }
+}
+//end directory exclusions
+
+//sets the data element
+if (typeof list[h] === 'undefined' || toExcl === true) {
+    //_satellite.logger.warn("+++++SETTING JSABORT TRUE+++++");
+    //_satellite.logger.warn("+++++typeof list[h]+++++ --> " + typeof list[h]);
+    //_satellite.logger.warn("+++++toExcl+++++ --> " + toExcl);
+    _satellite.setVar('jsAbort', 'true'); //set to true
+    //_satellite.cookie.set('blackList', 'yes'); //set blackList cookie so previous values are not set on next page
+    window.blackList = 'yes';
+    //s.getPreviousValue(s.pageName, 'gpv_pt'); //prev page title
+    //_satellite.cookie.set('gpv_pt', 'blank page title');
+    //_satellite.cookie.set('gpv_pthl', 'blank theme');
+    //_satellite.cookie.set('gpv_pc', 'blank page creator');
+    //_satellite.cookie.set('gpv_pqs', 'blank query string');
+    _satellite.cookie.set('prev_page_blackList', 'yes')
+}
+else if (toExcl === false) {
+    _satellite.setVar('jsAbort', 'false');
+    window.blackList = 'no';
+}
+else {
+    _satellite.gcCustom.thisDomain = list[h];
+    //_satellite.logger.warn("+++++SETTING JSABORT FALSE+++++");
+    _satellite.setVar('jsAbort', 'false'); //set to false
+    //_satellite.cookie.set('blackList', 'no') //set blacklist cookie to no to allow previous values to be set on next page
+    window.blackList = 'no';
+
+}
+/*jsAbort END*/
+
+</script>
+<!-- Adobe Analytics v5 staging version --><!--script src="//assets.adobedtm.com/be5dfd287373/8cdb3d539c44/launch-dfa8abb35555-staging.min.js"></script-->
+
+<script>dataLayer1 = [];</script>
+
+
+<!-- CustomScriptsCSSStart -->
+<link rel="stylesheet" media="all" href="./List of Inuit regions and the census subdivisions they include_files/indpopprofile.css">
+<!-- CustomScriptsCSSEnd -->
+</head>
+
+<body vocab="http://schema.org/" typeof="WebPage">
+
+<ul id="wb-tphp" class="wb-init wb-disable-inited">
+<li class="wb-slc">
+<a class="wb-sl" href="https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/ipp-ppa/about-apropos/tab-inuit-inuite.cfm?LANG=E#wb-cont">Skip to main content</a>
+</li>
+<li class="wb-slc visible-sm visible-md visible-lg">
+<a class="wb-sl" href="https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/ipp-ppa/about-apropos/tab-inuit-inuite.cfm?LANG=E#wb-info">Skip to "About this site"</a>
+</li>
+<li class="wb-slc"><a class="wb-sl" rel="alternate" href="https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/ipp-ppa/about-apropos/tab-inuit-inuite.cfm?LANG=E&amp;wbdisable=true">Switch to basic HTML version</a></li></ul>
+<header role="banner">
+<div id="wb-bnr" class="container">
+<section id="wb-lng" class="visible-md visible-lg text-right">
+<h2 class="wb-inv">Language selection</h2>
+<div class="row">
+<div class="col-md-12">
+<ul class="list-inline margin-bottom-none">
+<li><a lang="fr" href="https://www12.statcan.gc.ca/census-recensement/includes/change.cfm">Français</a></li>
+</ul>
+</div>
+</div>
+</section>
+<div class="row">
+<div class="brand col-xs-8 col-sm-9 col-md-6">
+<a href="https://www.statcan.gc.ca/en/start" property="URL"><img src="./List of Inuit regions and the census subdivisions they include_files/sig-blk-en.svg" alt="Statistics Canada"><span class="wb-inv"> / <span lang="fr">Statistique Canada</span></span></a>
+</div>
+<section class="wb-mb-links col-xs-4 col-sm-3 visible-sm visible-xs" id="wb-glb-mn">
+<h2>Search and menus</h2>
+<ul class="list-inline text-right chvrn">
+<li><a href="https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/ipp-ppa/about-apropos/tab-inuit-inuite.cfm?LANG=E#mb-pnl" title="Search and menus" aria-controls="mb-pnl" class="overlay-lnk" role="button"><span class="glyphicon glyphicon-search"><span class="glyphicon glyphicon-th-list"><span class="wb-inv">Search and menus</span></span></span></a></li>
+</ul>
+<div id="mb-pnl" class=" wb-overlay modal-content overlay-def wb-panel-r wb-overlay-inited" aria-hidden="true"><header class="modal-header"><div class="modal-title">Search and menus</div></header><div class="modal-body"><section class="srch-pnl">
+<h2 class="wb-inv">Search</h2>
+<form action="https://www.statcan.gc.ca/search/results/site-search" method="get" name="cse-search-box" role="search" class="form-inline">
+<div class="form-group wb-srch-qry">
+<label for="wb-srch-q-imprt" class="wb-inv">Search website</label>
+<input type="hidden" name="fq" value="stclac:2">
+<input id="wb-srch-q-imprt" list="wb-srch-q-ac" class="wb-srch-q form-control" name="q" type="search" value="" size="27" maxlength="150" placeholder="Search website">
+<datalist id="wb-srch-q-ac-imprt">
+</datalist>
+</div>
+<div class="form-group submit">
+<button type="submit" id="wb-srch-sub-imprt" class="btn btn-primary btn-small" name="wb-srch-sub"><span class="glyphicon-search glyphicon"></span><span class="wb-inv">Search</span></button>
+</div>
+</form>
+</section><section class="lng-ofr"><h3>Language selection</h3><ul class="list-inline"><li><a lang="fr" href="https://www12.statcan.gc.ca/census-recensement/includes/change.cfm">Français</a></li></ul></section><nav role="navigation" typeof="SiteNavigationElement" id="sm-pnl" class="sm-pnl wb-menu wb-menu-inited wb-init wb-navcurr-inited"><h3>Topics menu</h3><ul class="list-unstyled mb-menu" role="menu"><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="9" aria-posinset="1" tabindex="0" href="https://www150.statcan.gc.ca/n1/en/subjects?MM=1">Subjects</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="9" aria-posinset="2" tabindex="-1" href="https://www150.statcan.gc.ca/n1/en/type/data?MM=1">Data</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="9" aria-posinset="3" tabindex="-1" href="https://www150.statcan.gc.ca/n1/en/type/analysis?MM=1">Analysis</a></li><li><details><summary class="mb-item" role="menuitem" aria-setsize="9" aria-posinset="4" aria-haspopup="true" tabindex="-1">Reference</summary><ul class="list-unstyled mb-sm" role="menu" aria-expanded="false" aria-hidden="true"><li><a role="menuitem" aria-setsize="3" aria-posinset="1" tabindex="-1" href="https://www150.statcan.gc.ca/n1/en/type/reference?MM=1">Reference resources</a></li><li><a role="menuitem" aria-setsize="3" aria-posinset="2" tabindex="-1" href="https://www.statcan.gc.ca/en/concepts/index?MM=1">Standards, data sources and methods</a></li><li><a role="menuitem" aria-setsize="3" aria-posinset="3" tabindex="-1" href="https://www.statcan.gc.ca/en/reference?MM=1">Reference – Main page</a></li></ul></details></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="9" aria-posinset="5" tabindex="-1" href="https://www.statcan.gc.ca/en/geography?MM=1">Geography</a></li><li><details><summary class="mb-item" role="menuitem" aria-setsize="9" aria-posinset="6" aria-haspopup="true" tabindex="-1">Census</summary><ul class="list-unstyled mb-sm" role="menu" aria-expanded="false" aria-hidden="true"><li><a role="menuitem" aria-setsize="5" aria-posinset="1" tabindex="-1" href="https://www12.statcan.gc.ca/census-recensement/index-eng.cfm?MM=1">Census of Population</a></li><li><a role="menuitem" aria-setsize="5" aria-posinset="2" tabindex="-1" href="https://www.statcan.gc.ca/en/census-agriculture?MM=1">Census of Agriculture</a></li><li><a role="menuitem" aria-setsize="5" aria-posinset="3" tabindex="-1" href="https://www.statcan.gc.ca/en/census-environment?MM=1">Census of Environment</a></li><li><a role="menuitem" aria-setsize="5" aria-posinset="4" tabindex="-1" href="https://www.statcan.gc.ca/en/census/census-engagement?MM=1">Census engagement</a></li><li><a role="menuitem" aria-setsize="5" aria-posinset="5" tabindex="-1" href="https://www.statcan.gc.ca/en/census?MM=1">Census – Main page</a></li></ul></details></li><li><details><summary class="mb-item" role="menuitem" aria-setsize="9" aria-posinset="7" aria-haspopup="true" tabindex="-1">Surveys and statistical programs</summary><ul class="list-unstyled mb-sm" role="menu" aria-expanded="false" aria-hidden="true"><li><a role="menuitem" aria-setsize="4" aria-posinset="1" tabindex="-1" href="https://www.statcan.gc.ca/en/survey/index?MM=1">Information for survey participants</a></li><li><a role="menuitem" aria-setsize="4" aria-posinset="2" tabindex="-1" href="https://www150.statcan.gc.ca/n1/en/type/surveys?MM=1">Results and documentation of surveys and statistical programs</a></li><li><a role="menuitem" aria-setsize="4" aria-posinset="3" tabindex="-1" href="https://www.statcan.gc.ca/en/our-data?MM=1">Using new and existing data for official statistics</a></li><li><a role="menuitem" aria-setsize="4" aria-posinset="4" tabindex="-1" href="https://www.statcan.gc.ca/en/surveys?MM=1">Surveys and statistical programs – Main page</a></li></ul></details></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="9" aria-posinset="8" tabindex="-1" href="https://www.statcan.gc.ca/en/about/statcan?MM=1">About StatCan</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="9" aria-posinset="9" tabindex="-1" href="https://www.canada.ca/en.html">Canada.ca</a></li></ul></nav><nav role="navigation" typeof="SiteNavigationElement" id="info-pnl" class="info-pnl wb-menu wb-menu-inited wb-init"><h3>About this site</h3><ul class="list-unstyled mb-menu" role="menu"><li><details><summary class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="1" aria-haspopup="true" tabindex="0">Statistics Canada</summary><ul class="list-unstyled mb-sm" role="menu" aria-expanded="false" aria-hidden="true"><li><a role="menuitem" aria-setsize="2" aria-posinset="1" tabindex="-1" href="https://www.statcan.gc.ca/en/reference/refcentre/index">Contact StatCan</a></li><li><a role="menuitem" aria-setsize="2" aria-posinset="2" tabindex="-1" href="https://www.statcan.gc.ca/en/trust">Trust Centre</a></li></ul></details></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="2" tabindex="-1" href="https://www.statcan.gc.ca/en/reference/refcentre/index">Contact StatCan</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="3" tabindex="-1" href="https://www.statcan.gc.ca/en/trust">Trust Centre</a></li><li><details><summary class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="4" aria-haspopup="true" tabindex="-1">Government of Canada</summary><ul class="list-unstyled mb-sm" role="menu" aria-expanded="false" aria-hidden="true"><li><a role="menuitem" aria-setsize="21" aria-posinset="1" tabindex="-1" href="https://www.canada.ca/en/contact.html">All contacts</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="2" tabindex="-1" href="https://www.canada.ca/en/government/dept.html">Departments and agencies</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="3" tabindex="-1" href="https://www.canada.ca/en/government/system.html">About government</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="4" tabindex="-1" href="https://www.canada.ca/en/services/jobs.html">Jobs</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="5" tabindex="-1" href="https://www.canada.ca/en/services/immigration-citizenship.html">Immigration and citizenship</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="6" tabindex="-1" href="https://travel.gc.ca/">Travel and tourism</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="7" tabindex="-1" href="https://www.canada.ca/en/services/business.html">Business</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="8" tabindex="-1" href="https://www.canada.ca/en/services/benefits.html">Benefits</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="9" tabindex="-1" href="https://www.canada.ca/en/services/health.html">Health</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="10" tabindex="-1" href="https://www.canada.ca/en/services/taxes.html">Taxes</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="11" tabindex="-1" href="https://www.canada.ca/en/services/environment.html">Environment and natural resources</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="12" tabindex="-1" href="https://www.canada.ca/en/services/defence.html">National security and defence</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="13" tabindex="-1" href="https://www.canada.ca/en/services/culture.html">Culture, history and sport</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="14" tabindex="-1" href="https://www.canada.ca/en/services/policing.html">Policing, justice and emergencies</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="15" tabindex="-1" href="https://www.canada.ca/en/services/transport.html">Transport and infrastructure</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="16" tabindex="-1" href="https://international.gc.ca/world-monde/index.aspx?lang=eng">Canada and the world</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="17" tabindex="-1" href="https://www.canada.ca/en/services/finance.html">Money and finance</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="18" tabindex="-1" href="https://www.canada.ca/en/services/science.html">Science and innovation</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="19" tabindex="-1" href="https://www.canada.ca/en/services/indigenous-peoples.html">Indigenous peoples</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="20" tabindex="-1" href="https://www.canada.ca/en/services/veterans.html">Veterans and military</a></li><li><a role="menuitem" aria-setsize="21" aria-posinset="21" tabindex="-1" href="https://www.canada.ca/en/services/youth.html">Youth</a></li></ul></details></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="5" tabindex="-1" href="https://www.canada.ca/en/contact.html">All contacts</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="6" tabindex="-1" href="https://www.canada.ca/en/government/dept.html">Departments and agencies</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="7" tabindex="-1" href="https://www.canada.ca/en/government/system.html">About government</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="8" tabindex="-1" href="https://www.canada.ca/en/services/jobs.html">Jobs</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="9" tabindex="-1" href="https://www.canada.ca/en/services/immigration-citizenship.html">Immigration and citizenship</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="10" tabindex="-1" href="https://travel.gc.ca/">Travel and tourism</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="11" tabindex="-1" href="https://www.canada.ca/en/services/business.html">Business</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="12" tabindex="-1" href="https://www.canada.ca/en/services/benefits.html">Benefits</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="13" tabindex="-1" href="https://www.canada.ca/en/services/health.html">Health</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="14" tabindex="-1" href="https://www.canada.ca/en/services/taxes.html">Taxes</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="15" tabindex="-1" href="https://www.canada.ca/en/services/environment.html">Environment and natural resources</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="16" tabindex="-1" href="https://www.canada.ca/en/services/defence.html">National security and defence</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="17" tabindex="-1" href="https://www.canada.ca/en/services/culture.html">Culture, history and sport</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="18" tabindex="-1" href="https://www.canada.ca/en/services/policing.html">Policing, justice and emergencies</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="19" tabindex="-1" href="https://www.canada.ca/en/services/transport.html">Transport and infrastructure</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="20" tabindex="-1" href="https://international.gc.ca/world-monde/index.aspx?lang=eng">Canada and the world</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="21" tabindex="-1" href="https://www.canada.ca/en/services/finance.html">Money and finance</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="22" tabindex="-1" href="https://www.canada.ca/en/services/science.html">Science and innovation</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="23" tabindex="-1" href="https://www.canada.ca/en/services/indigenous-peoples.html">Indigenous peoples</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="24" tabindex="-1" href="https://www.canada.ca/en/services/veterans.html">Veterans and military</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="25" tabindex="-1" href="https://www.canada.ca/en/services/youth.html">Youth</a></li><li><details><summary class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="26" aria-haspopup="true" tabindex="-1">Government of Canada Corporate</summary><ul class="list-unstyled mb-sm" role="menu" aria-expanded="false" aria-hidden="true"><li><a role="menuitem" aria-setsize="5" aria-posinset="1" tabindex="-1" href="https://www.canada.ca/en/social.html">Social media</a></li><li><a role="menuitem" aria-setsize="5" aria-posinset="2" tabindex="-1" href="https://www.canada.ca/en/mobile.html">Mobile applications</a></li><li><a role="menuitem" aria-setsize="5" aria-posinset="3" tabindex="-1" href="https://www.canada.ca/en/government/about.html">About Canada.ca</a></li><li><a role="menuitem" aria-setsize="5" aria-posinset="4" tabindex="-1" href="https://www.statcan.gc.ca/en/reference/important-notices">Terms and conditions</a></li><li><a role="menuitem" aria-setsize="5" aria-posinset="5" tabindex="-1" href="https://www.statcan.gc.ca/en/reference/privacy">Privacy</a></li></ul></details></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="27" tabindex="-1" href="https://www.canada.ca/en/social.html">Social media</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="28" tabindex="-1" href="https://www.canada.ca/en/mobile.html">Mobile applications</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="29" tabindex="-1" href="https://www.canada.ca/en/government/about.html">About Canada.ca</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="30" tabindex="-1" href="https://www.statcan.gc.ca/en/reference/important-notices">Terms and conditions</a></li><li class="no-sect"><a class="mb-item" role="menuitem" aria-setsize="31" aria-posinset="31" tabindex="-1" href="https://www.statcan.gc.ca/en/reference/privacy">Privacy</a></li></ul></nav></div><div class="modal-footer"><button type="button" class="btn btn-sm btn-primary pull-left overlay-close" title="Close overlay">Close<span class="wb-inv">Close overlay</span></button></div><button type="button" class="mfp-close overlay-close" title="Close: Search and menus (escape key)">×<span class="wb-inv"> Close: Search and menus (escape key)</span></button></div>
+</section>
+
+<section id="wb-srch" class="col-xs-6 text-right visible-md visible-lg">
+<h2 class="wb-inv">Search</h2>
+<form action="https://www.statcan.gc.ca/search/results/site-search" method="get" name="cse-search-box" role="search" class="form-inline">
+<div class="form-group wb-srch-qry">
+<label for="wb-srch-q" class="wb-inv">Search website</label>
+<input type="hidden" name="fq" value="stclac:2">
+<input id="wb-srch-q" list="wb-srch-q-ac" class="wb-srch-q form-control" name="q" type="search" value="" size="27" maxlength="150" placeholder="Search website">
+<datalist id="wb-srch-q-ac">
+</datalist>
+</div>
+<div class="form-group submit">
+<button type="submit" id="wb-srch-sub" class="btn btn-primary btn-small" name="wb-srch-sub"><span class="glyphicon-search glyphicon"></span><span class="wb-inv">Search</span></button>
+</div>
+</form>
+</section>
+</div>
+</div>
+
+<nav role="navigation" id="wb-sm" class="wb-menu visible-md visible-lg wb-init wb-data-ajax-replace-inited wb-menu-inited wb-navcurr-inited" data-trgt="mb-pnl" data-ajax-replace="/wet-boew4b/ajax/sitemenu-en.html" typeof="SiteNavigationElement">
+
+<!-- DataAjaxFragmentStart -->
+<!-- secondary navigation if enabled -->
+<div class="pnl-strt container nvbar">
+	<h2 class="wb-inv">Topics menu</h2>
+	<div class="row">
+		<ul class="list-inline menu" role="menubar">
+			<li><a href="https://www150.statcan.gc.ca/n1/en/subjects?MM=1" class="item" tabindex="0" aria-posinset="1" aria-setsize="9" role="menuitem">Subjects</a></li>
+			<li><a href="https://www150.statcan.gc.ca/n1/en/type/data?MM=1" class="item" tabindex="-1" aria-posinset="2" aria-setsize="9" role="menuitem">Data</a></li>
+			<li><a href="https://www150.statcan.gc.ca/n1/en/type/analysis?MM=1" class="item" tabindex="-1" aria-posinset="3" aria-setsize="9" role="menuitem">Analysis</a></li>
+			<li><a href="https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/ipp-ppa/about-apropos/tab-inuit-inuite.cfm?LANG=E#reference" class="item" tabindex="-1" aria-posinset="4" aria-setsize="9" role="menuitem" aria-haspopup="true">Reference<span class="expicon glyphicon glyphicon-chevron-down"></span></a>
+				<ul class="sm list-unstyled" id="reference" role="menu" aria-expanded="false" aria-hidden="true">
+					<li><a href="https://www150.statcan.gc.ca/n1/en/type/reference?MM=1" tabindex="-1" aria-posinset="1" aria-setsize="3" role="menuitem">Reference resources</a></li>
+					<li><a href="https://www.statcan.gc.ca/en/concepts/index?MM=1" tabindex="-1" aria-posinset="2" aria-setsize="3" role="menuitem">Standards, data sources and methods</a></li>
+					<li class="slflnk"><a href="https://www.statcan.gc.ca/en/reference?MM=1" tabindex="-1" aria-posinset="3" aria-setsize="3" role="menuitem">Reference – Main page</a></li>
+				</ul>
+			</li>
+			<li><a href="https://www.statcan.gc.ca/en/geography?MM=1" class="item" tabindex="-1" aria-posinset="5" aria-setsize="9" role="menuitem">Geography</a></li>
+			<li><a href="https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/ipp-ppa/about-apropos/tab-inuit-inuite.cfm?LANG=E#census" class="item" tabindex="-1" aria-posinset="6" aria-setsize="9" role="menuitem" aria-haspopup="true">Census<span class="expicon glyphicon glyphicon-chevron-down"></span></a>
+				<ul class="sm list-unstyled" id="census" role="menu" aria-expanded="false" aria-hidden="true">
+					<li><a href="https://www12.statcan.gc.ca/census-recensement/index-eng.cfm?MM=1" tabindex="-1" aria-posinset="1" aria-setsize="5" role="menuitem">Census of Population</a></li>
+					<li><a href="https://www.statcan.gc.ca/en/census-agriculture?MM=1" tabindex="-1" aria-posinset="2" aria-setsize="5" role="menuitem">Census of Agriculture</a></li>
+					<li><a href="https://www.statcan.gc.ca/en/census-environment?MM=1" tabindex="-1" aria-posinset="3" aria-setsize="5" role="menuitem">Census of Environment</a></li>
+					<li><a href="https://www.statcan.gc.ca/en/census/census-engagement?MM=1" tabindex="-1" aria-posinset="4" aria-setsize="5" role="menuitem">Census engagement</a></li>
+					<li class="slflnk"><a href="https://www.statcan.gc.ca/en/census?MM=1" tabindex="-1" aria-posinset="5" aria-setsize="5" role="menuitem">Census – Main page</a></li>
+				</ul>
+			</li>
+			<li><a href="https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/ipp-ppa/about-apropos/tab-inuit-inuite.cfm?LANG=E#surveys" class="item" tabindex="-1" aria-posinset="7" aria-setsize="9" role="menuitem" aria-haspopup="true">Surveys and statistical programs<span class="expicon glyphicon glyphicon-chevron-down"></span></a>
+				<ul class="sm list-unstyled" id="surveys" role="menu" aria-expanded="false" aria-hidden="true">
+					<li><a href="https://www.statcan.gc.ca/en/survey/index?MM=1" tabindex="-1" aria-posinset="1" aria-setsize="4" role="menuitem">Information for survey participants</a></li>
+					<li><a href="https://www150.statcan.gc.ca/n1/en/type/surveys?MM=1" tabindex="-1" aria-posinset="2" aria-setsize="4" role="menuitem">Results and documentation of surveys and statistical programs</a></li>
+					<li><a href="https://www.statcan.gc.ca/en/our-data?MM=1" tabindex="-1" aria-posinset="3" aria-setsize="4" role="menuitem">Using new and existing data for official statistics</a></li>
+					<li class="slflnk"><a href="https://www.statcan.gc.ca/en/surveys?MM=1" tabindex="-1" aria-posinset="4" aria-setsize="4" role="menuitem">Surveys and statistical programs – Main page</a></li>
+				</ul>
+			</li>
+			<li><a href="https://www.statcan.gc.ca/en/about/statcan?MM=1" class="item" tabindex="-1" aria-posinset="8" aria-setsize="9" role="menuitem">About StatCan</a></li>
+			<li><a href="https://www.canada.ca/en.html" class="item" tabindex="-1" aria-posinset="9" aria-setsize="9" role="menuitem">Canada.ca</a></li>
+		</ul>
+	</div>
+</div>
+<!-- DataAjaxFragmentEnd -->
+
+</nav>
+
+<nav role="navigation" id="wb-bc" class="" property="breadcrumb">
+	<div class="container">
+		<div class="row">
+
+<!-- Breadcrumb trail -->
+<ol class="breadcrumb">
+
+	<li><a href="https://statcan.gc.ca/en/start">Home</a></li>
+	<li><a href="https://www12.statcan.gc.ca/census-recensement/index-eng.cfm">Census of Population</a></li> 
+	<li><a href="https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/index-eng.cfm">Data products, 2021 Census</a></li>
+    <li><a href="https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/ipp-ppa/index.cfm?Lang=E">Indigenous Population Profile, 2021 Census of Population</a></li>
+    <li><a href="https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/ipp-ppa/about-apropos/about-apropos.cfm?Lang=E">About this product</a></li>
+
+</ol>
+
+</div>
+</div>
+</nav>
+</header>
+
+<main role="main" property="mainContentOfPage" class="container">
+
+
+
+<section>
+<h1 property="name" id="wb-cont">	
+	List of Inuit regions and the census subdivisions they include
+</h1>
+
+<table class="table">
+	<thead>
+    	<tr>
+        	
+        	<th>Province/Territory</th>
+            <th>Inuit region</th>
+            <th>Census subdivision</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+    	
+    	<tr>
+        	<th>Newfoundland and Labrador</th>
+            <td>Nunatsiavut</td>
+            
+            <td>Division No. 11, Subd. C, <abbr title="Subdivision of unorganized">SNO</abbr> (1011005); Rigolet, <abbr title="Town">T</abbr> (1011010); Postville, <abbr title="Town">T</abbr> (1011015); Makkovik, <abbr title="Town">T</abbr> (1011020); Hopedale, <abbr title="Town">T</abbr> (1011030); Nain, <abbr title="Town">T</abbr> (1011035); Division No. 11, Subd. E, <abbr title="Subdivision of unorganized">SNO</abbr> (1011040)</td>
+        </tr>
+        
+    	<tr>
+        	<th>Quebec</th>
+            <td>Nunavik</td>
+            
+            <td>Kuujjuarapik, <abbr title="Village nordique">VN</abbr> (2499075); Umiujaq, <abbr title="Village nordique">VN</abbr> (2499080); Inukjuak, <abbr title="Village nordique">VN</abbr> (2499085); Kangiqsualujjuaq, <abbr title="Village nordique">VN</abbr> (2499090); Kuujjuaq, <abbr title="Village nordique">VN</abbr> (2499095); Tasiujaq, <abbr title="Village nordique">VN</abbr> (2499100); Aupaluk, <abbr title="Village nordique">VN</abbr> (2499105); Kangirsuk, <abbr title="Village nordique">VN</abbr> (2499110); Quaqtaq, <abbr title="Village nordique">VN</abbr> (2499115); Puvirnituq, <abbr title="Village nordique">VN</abbr> (2499120); Akulivik, <abbr title="Village nordique">VN</abbr> (2499125); Kangiqsujuaq, <abbr title="Village nordique">VN</abbr> (2499130); Salluit, <abbr title="Village nordique">VN</abbr> (2499135); Ivujivik, <abbr title="Village nordique">VN</abbr> (2499140); Kuujjuarapik, <abbr title="Terre inuite">TI</abbr> (2499877); Umiujaq, <abbr title="Terre inuite">TI</abbr> (2499878); Inukjuak, <abbr title="Terre inuite">TI</abbr> (2499879); Akulivik, <abbr title="Terre inuite">TI</abbr> (2499883); Ivujivik, <abbr title="Terre inuite">TI</abbr> (2499885); Salluit, <abbr title="Terre inuite">TI</abbr> (2499887); Kangiqsujuaq, <abbr title="Terre inuite">TI</abbr> (2499888); Quaqtaq, <abbr title="Terre inuite">TI</abbr> (2499889); Kangirsuk, <abbr title="Terre inuite">TI</abbr> (2499890); Aupaluk, <abbr title="Terre inuite">TI</abbr> (2499891); Tasiujaq, <abbr title="Terre inuite">TI</abbr> (2499892); Kuujjuaq, <abbr title="Terre inuite">TI</abbr> (2499893); Kangiqsualujjuaq, <abbr title="Terre inuite">TI</abbr> (2499894); Rivière-Koksoak, <abbr title="Unorganized">NO</abbr> (2499902); Baie-d'Hudson, <abbr title="Unorganized">NO</abbr> (2499904)</td>
+        </tr>
+        
+    	<tr>
+        	<th>Northwest Territories</th>
+            <td>Inuvialuit region</td>
+            
+            <td>North Slope, <abbr title="Unorganized">NO</abbr> (6001065); Paulatuk, <abbr title="Hamlet">HAM</abbr> (6101014); Inuvik, <abbr title="Town">T</abbr> (6101017); Aklavik, <abbr title="Hamlet">HAM</abbr> (6101025); Tuktoyaktuk, <abbr title="Hamlet">HAM</abbr> (6101036); Sachs Harbour, <abbr title="Hamlet">HAM</abbr> (6101041); Region 1, Unorganized, <abbr title="Unorganized">NO</abbr> (6101063); Ulukhaktok, <abbr title="Hamlet">HAM</abbr> (6101095)</td>
+        </tr>
+        
+    	<tr>
+        	<th>Nunavut</th>
+            <td>Nunavut</td>
+            
+            <td>Sanikiluaq, <abbr title="Hamlet">HAM</abbr> (6204001); Iqaluit, <abbr title="City">CY</abbr> (6204003); Kimmirut, <abbr title="Hamlet">HAM</abbr> (6204005); Cape Dorset, <abbr title="Hamlet">HAM</abbr> (6204007); Pangnirtung, <abbr title="Hamlet">HAM</abbr> (6204009); Qikiqtarjuaq, <abbr title="Hamlet">HAM</abbr> (6204010); Hall Beach, <abbr title="Hamlet">HAM</abbr> (6204011); Igloolik, <abbr title="Hamlet">HAM</abbr> (6204012); Clyde River, <abbr title="Hamlet">HAM</abbr> (6204015); Arctic Bay, <abbr title="Hamlet">HAM</abbr> (6204018); Nanisivik, <abbr title="Settlement">SET</abbr> (6204019); Pond Inlet, <abbr title="Hamlet">HAM</abbr> (6204020); Resolute, <abbr title="Hamlet">HAM</abbr> (6204022); Grise Fiord, <abbr title="Hamlet">HAM</abbr> (6204025); Qikiqtaaluk, Unorganized, <abbr title="Unorganized">NO</abbr> (6204030); Coral Harbour, <abbr title="Hamlet">HAM</abbr> (6205014); Arviat, <abbr title="Hamlet">HAM</abbr> (6205015); Whale Cove, <abbr title="Hamlet">HAM</abbr> (6205016); Rankin Inlet, <abbr title="Hamlet">HAM</abbr> (6205017); Chesterfield Inlet, <abbr title="Hamlet">HAM</abbr> (6205019); Baker Lake, <abbr title="Hamlet">HAM</abbr> (6205023); Naujaat, <abbr title="Hamlet">HAM</abbr> (6205027); Kivalliq, Unorganized, <abbr title="Unorganized">NO</abbr> (6205033); Kugaaruk, <abbr title="Hamlet">HAM</abbr> (6208047); Kugluktuk, <abbr title="Hamlet">HAM</abbr> (6208059); Bathurst Inlet, <abbr title="Settlement">SET</abbr> (6208065); Umingmaktok, <abbr title="Settlement">SET</abbr> (6208068); Cambridge Bay, <abbr title="Hamlet">HAM</abbr> (6208073); Gjoa Haven, <abbr title="Hamlet">HAM</abbr> (6208081); Taloyoak, <abbr title="Hamlet">HAM</abbr> (6208087); Kitikmeot, Unorganized, <abbr title="Unorganized">NO</abbr> (6208098)</td>
+        </tr>
+        
+    </tbody>
+</table>
+
+</section>
+
+<div class="pagedetails">
+	<dl id="wb-dtmd">
+		<dt>Date modified: </dt>
+		<dd><time property="dateModified"> 2023-05-29 				</time>
+			</dd>
+		</dl>
+	</div>
+
+</main><footer id="wb-info" class=" wb-navcurr-inited">
+	<h2 class="wb-inv">About this site</h2>
+	<div class="gc-contextual">
+		<div class="container">
+			<nav>
+				<h3>Statistics Canada</h3>
+				<ul class="list-unstyled colcount-sm-2 colcount-md-3">
+					<li><a href="https://www.statcan.gc.ca/en/reference/refcentre/index">Contact StatCan</a></li>
+					<li><a href="https://www.statcan.gc.ca/en/trust">Trust Centre</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<div class="gc-main-footer">
+		<div class="container">
+			<nav>
+				<h3>Government of Canada</h3>
+				<ul class="list-unstyled colcount-sm-2 colcount-md-3">
+					<li><a href="https://www.canada.ca/en/contact.html">All contacts</a></li>
+					<li><a href="https://www.canada.ca/en/government/dept.html">Departments and agencies</a></li>
+					<li><a href="https://www.canada.ca/en/government/system.html">About government</a></li>
+				</ul>
+				<h4><span class="wb-inv">Themes and topics</span></h4>
+				<ul class="list-unstyled colcount-sm-2 colcount-md-3">
+					<li><a href="https://www.canada.ca/en/services/jobs.html">Jobs</a></li>
+					<li><a href="https://www.canada.ca/en/services/immigration-citizenship.html">Immigration and citizenship</a></li>
+					<li><a href="https://travel.gc.ca/">Travel and tourism</a></li>
+					<li><a href="https://www.canada.ca/en/services/business.html">Business</a></li>
+					<li><a href="https://www.canada.ca/en/services/benefits.html">Benefits</a></li>
+					<li><a href="https://www.canada.ca/en/services/health.html">Health</a></li>
+					<li><a href="https://www.canada.ca/en/services/taxes.html">Taxes</a></li>
+					<li><a href="https://www.canada.ca/en/services/environment.html">Environment and natural resources</a></li>
+					<li><a href="https://www.canada.ca/en/services/defence.html">National security and defence</a></li>
+					<li><a href="https://www.canada.ca/en/services/culture.html">Culture, history and sport</a></li>
+					<li><a href="https://www.canada.ca/en/services/policing.html">Policing, justice and emergencies</a></li>
+					<li><a href="https://www.canada.ca/en/services/transport.html">Transport and infrastructure</a></li>
+					<li><a href="https://international.gc.ca/world-monde/index.aspx?lang=eng">Canada and the world</a></li>
+					<li><a href="https://www.canada.ca/en/services/finance.html">Money and finance</a></li>
+					<li><a href="https://www.canada.ca/en/services/science.html">Science and innovation</a></li>
+					<li><a href="https://www.canada.ca/en/services/indigenous-peoples.html">Indigenous peoples</a></li>
+					<li><a href="https://www.canada.ca/en/services/veterans.html">Veterans and military</a></li>
+					<li><a href="https://www.canada.ca/en/services/youth.html">Youth</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<div class="gc-sub-footer">
+		<div class="container d-flex align-items-center">
+			<nav>
+				<h3 class="wb-inv">Government of Canada Corporate</h3>
+				<ul>
+					<li><a href="https://www.canada.ca/en/social.html">Social media</a></li>
+					<li><a href="https://www.canada.ca/en/mobile.html">Mobile applications</a></li>
+					<li><a href="https://www.canada.ca/en/government/about.html">About Canada.ca</a></li>
+					<li><a href="https://www.statcan.gc.ca/en/reference/important-notices">Terms and conditions</a></li>
+					<li><a href="https://www.statcan.gc.ca/en/reference/privacy">Privacy</a></li>
+				</ul>
+			</nav>
+			<div class="wtrmrk align-self-end">
+				<img src="./List of Inuit regions and the census subdivisions they include_files/wmms-blk.svg" alt="Symbol of the Government of Canada">
+			</div>
+		</div>
+	</div>
+</footer>
+
+<!--[if gte IE 9 | !IE ]><!-->
+<script src="./List of Inuit regions and the census subdivisions they include_files/wet-boew.min.js.download"></script><span id="wb-rsz" class="wb-init">&nbsp;</span>
+<script src="./List of Inuit regions and the census subdivisions they include_files/theme.min.js.download"></script>
+<!--<![endif]-->
+<!--[if lt IE 9]>
+<script src="/wet-boew4b/js/ie8-wet-boew2.min.js"></script>
+<![endif]-->
+<!-- LiveZilla Script BEGIN -->
+<!--<script type="text/javascript">
+	var lz_data = {overwrite:false,language:'en'};
+</script>
+<script type="text/javascript" id="c2e78f4994aa191dd320f0f115f8fd70" src="https://www.statcan.gc.ca/livechat/script.php?id=c2e78f4994aa191dd320f0f115f8fd70" defer></script>-->
+<!-- LiveZilla Script END -->
+<!-- InvitationManager -->
+<script src="./List of Inuit regions and the census subdivisions they include_files/Overlay.js.download"></script>
+<script src="./List of Inuit regions and the census subdivisions they include_files/InvitationManager.js.download"></script>
+<!-- End InvitationManager -->
+<script type="text/javascript">_satellite.pageBottom();</script><script>
+_satellite.track('pageReset');
+</script>
+
+<!-- CustomScriptsJSStart -->
+<!-- CustomScriptsJSEnd -->
+
+
+
+</body></html>
